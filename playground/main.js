@@ -1,5 +1,6 @@
 import * as dom from '../utility/dom.js';
 import * as math from '../utility/math.js';
+import * as ndarray from '../utility/ndarray.js';
 import * as object from '../utility/object.js';
 import * as random from '../utility/random.js';
 import * as set from '../utility/set.js';
@@ -153,6 +154,39 @@ function testMath() {
                     1.3416407864998738]));
 }
 
+function testNdarray() {
+  // equals
+  console.assert(ndarray.equals([[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                                [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+  console.assert(ndarray.equals([[1, 2], [4, 5], [7, 8]],
+                                [[1, 2], [4, 5], [7, 8]]));
+  console.assert(!ndarray.equals([[1, 2], [4, 5], [7, 8]],
+                                 [[1, 2], [4, 0], [7, 8]]));
+
+  // init
+  const arr3D = ndarray.init([2, 3, 4], 42);
+  console.assert(arr3D.length === 2);
+  console.assert(arr3D[0].length === 3);
+  console.assert(arr3D[0][0].length === 4);
+  console.assert(arr3D.every(d0 => d0.every(d1 => d1.every(x => x === 42))));
+  const arr2D = ndarray.init([2, 3], (row, col) => (row + 1) * 10 + (col + 1));
+  console.assert(ndarray.equals(arr2D, [[11, 12, 13], [21, 22, 23]]));
+
+
+  // shape
+  console.assert(ndarray.equals(ndarray.shape(arr3D), [2, 3, 4]));
+  console.assert(ndarray.equals(ndarray.shape(arr2D), [2, 3]));
+
+  // map
+  const mapped2D = ndarray.map(arr2D,
+                               (x, row, col) => x * (row + 1) + (col + 1));
+  console.assert(ndarray.equals(mapped2D, [[12, 14, 16], [43, 46, 49]]));
+  console.assert(ndarray.equals(arr2D, [[11, 12, 13], [21, 22, 23]]));
+
+  // index
+  console.assert(ndarray.index(mapped2D, [1, 2]), 46);
+}
+
 async function main() {
   const testFunctions = [
     testDom,
@@ -160,6 +194,7 @@ async function main() {
     testSet,
     testObject,
     testMath,
+    testNdarray,
   ];
 
   for (const fn of testFunctions) {
