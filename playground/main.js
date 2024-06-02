@@ -141,6 +141,8 @@ function testObject() {
 function testMath() {
   console.assert(math.sum([1, 2, 3, 4]) == 10);
   console.assert(math.mean([1, 2, 3, 4]) == 2.5);
+  console.assert(math.argmax([1, 3, 5, 0, 2]) == 2);
+  console.assert(math.argmin([1, 3, 5, 0, 2]) == 3);
   console.assert(math.average([1, 2, 3, 4]) == 2.5);
   console.assert(math.variance([1, 2, 3, 4]) == 1.25);
   console.assert(math.std([1, 2, 3, 4]) == 1.118033988749895);

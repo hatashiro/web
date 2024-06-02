@@ -7,6 +7,27 @@ function withSpread(fn) {
 export const max = withSpread(Math.max);
 export const min = withSpread(Math.min);
 
+export function argbest(xs, isBetter) {
+  if (xs.length === 0) return -1;
+  let best = xs[0];
+  let bestIdx = 0;
+  for (let i = 1; i < xs.length; i++) {
+    if (isBetter(best, xs[i])) {
+      best = xs[i];
+      bestIdx = i;
+    }
+  }
+  return bestIdx;
+}
+
+export function argmax(xs) {
+  return argbest(xs, (best, x) => x > best);
+}
+
+export function argmin(xs) {
+  return argbest(xs, (best, x) => x < best);
+}
+
 export function sum(xs) {
   let res = 0;
   for (const x of xs) res += x;
