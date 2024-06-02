@@ -62,3 +62,7 @@ export function set(arr, idx, value) {
 export function map(arr, mapFn) {
   return init(shape(arr), (...idx) => mapFn(get(arr, idx), ...idx));
 }
+
+export function copy(arr) {
+  return map(arr, x => x);
+}
