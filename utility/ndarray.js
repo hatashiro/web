@@ -32,10 +32,33 @@ export function shape(arr) {
   return Array.isArray(arr) ? [arr.length].concat(shape(arr[0])) : [];
 }
 
-export function index(arr, idx) {
-  return idx.length ? index(arr[idx[0]], idx.slice(1)) : arr;
+export function get(arr, idx) {
+  return idx.length ? get(arr[idx[0]], idx.slice(1)) : arr;
+}
+
+// Multi-dimensional set.
+export function set(arr, idx, value) {
+  if (arguments.length === 2) {
+    // If called without `idx`, use an empty idx to set all.
+    return set(arr, [], value);
+  }
+
+  // If idx is scalar, make it singleton.
+  if (!Array.isArray(idx)) {
+    idx = [idx];
+  }
+
+  if (idx.length === 1 && equals(shape(arr[idx[0]]), shape(value))) {
+    arr[idx[0]] = value;
+  } else if (idx.length === 0) {
+    for (let i = 0; i < arr.length; i++) {
+      set(arr, i, value);
+    }
+  } else {
+    set(arr[idx[0]], idx.slice(1), value);
+  }
 }
 
 export function map(arr, mapFn) {
-  return init(shape(arr), (...idx) => mapFn(index(arr, idx), ...idx));
+  return init(shape(arr), (...idx) => mapFn(get(arr, idx), ...idx));
 }

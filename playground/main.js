@@ -183,8 +183,12 @@ function testNdarray() {
   console.assert(ndarray.equals(mapped2D, [[12, 14, 16], [43, 46, 49]]));
   console.assert(ndarray.equals(arr2D, [[11, 12, 13], [21, 22, 23]]));
 
-  // index
-  console.assert(ndarray.index(mapped2D, [1, 2]), 46);
+  // get & set
+  console.assert(ndarray.get(mapped2D, [1, 2]), 49);
+  ndarray.set(mapped2D, [1, 2], 42)
+  console.assert(ndarray.equals(mapped2D, [[12, 14, 16], [43, 46, 42]]));
+  ndarray.set(mapped2D, [0], 42)
+  console.assert(ndarray.equals(mapped2D, [[42, 42, 42], [43, 46, 42]]));
 }
 
 async function main() {
