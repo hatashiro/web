@@ -2,6 +2,7 @@ import * as dom from '../utility/dom.js';
 import * as math from '../utility/math.js';
 import * as object from '../utility/object.js';
 import * as random from '../utility/random.js';
+import * as set from '../utility/set.js';
 import * as string from '../utility/string.js';
 
 function testDom() {
@@ -82,6 +83,15 @@ function testString() {
 }
 
 
+function testSet() {
+  // equals
+  console.assert(set.equals(new Set([1, 2, 3, 4]), new Set([1, 2, 3, 4])));
+  console.assert(set.equals(new Set([1, 2, 3, 4]), new Set([4, 3, 2, 1])));
+  console.assert(!set.equals(new Set([1, 2, 3, 4, 5]), new Set([1, 2, 3, 4])));
+  console.assert(!set.equals(new Set([1, 2, 3, 4]), new Set([1, 2, 3, 4, 5])));
+  console.assert(!set.equals(new Set([1, 2, 3, 4, 5]), new Set([1, 2, 3, 4, 0])));
+}
+
 function testObject() {
   // arrayEquals
   console.assert(object.arrayEquals([1, 2, 3, 4], [1, 2, 3, 4]));
@@ -89,13 +99,6 @@ function testObject() {
   console.assert(!object.arrayEquals([1, 2, 3, 4, 5], [1, 2, 3, 4]));
   console.assert(!object.arrayEquals([1, 2, 3, 4], [1, 2, 3, 4, 5]));
   console.assert(!object.arrayEquals([1, 2, 3, 4, 5], [1, 2, 3, 4, 0]));
-
-  // setEquals
-  console.assert(object.setEquals(new Set([1, 2, 3, 4]), new Set([1, 2, 3, 4])));
-  console.assert(object.setEquals(new Set([1, 2, 3, 4]), new Set([4, 3, 2, 1])));
-  console.assert(!object.setEquals(new Set([1, 2, 3, 4, 5]), new Set([1, 2, 3, 4])));
-  console.assert(!object.setEquals(new Set([1, 2, 3, 4]), new Set([1, 2, 3, 4, 5])));
-  console.assert(!object.setEquals(new Set([1, 2, 3, 4, 5]), new Set([1, 2, 3, 4, 0])));
 
   // mapEquals
   console.assert(object.mapEquals(new Map([[1, 2], [3, 4]]), new Map([[1, 2], [3, 4]])));
@@ -154,6 +157,7 @@ async function main() {
   const testFunctions = [
     testDom,
     testString,
+    testSet,
     testObject,
     testMath,
   ];

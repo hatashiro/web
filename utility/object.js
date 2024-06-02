@@ -1,13 +1,11 @@
+import * as set from './set.js';
+
 export function arrayEquals(xs, ys, deep=false) {
   if (xs.length !== ys.length) return false;
   for (let i = 0; i < xs.length; i++) {
     if (!(deep ? equals(xs[i], ys[i], true) : xs[i] === ys[i])) return false;
   }
   return true;
-}
-
-export function setEquals(xs, ys) {
-  return xs.size === ys.size && Array.from(xs).every(x => ys.has(x));
 }
 
 export function mapEquals(x, y, deep=false) {
@@ -33,8 +31,8 @@ export function equals(x, y, deep=false) {
   if (typeof(x) !== 'object') return false;  // Simple types.
   if (!x || !y) return false;  // null.
   if (x.constructor !== y.constructor) return false;  // Different types.
-  if ([Set, WeakSet].includes(x.constructor)) return setEquals(x, y);  // Map.
-  if ([Map, WeakMap].includes(x.constructor)) return mapEquals(x, y, deep);  // Set.
+  if ([Set, WeakSet].includes(x.constructor)) return set.equals(x, y);  // Set.
+  if ([Map, WeakMap].includes(x.constructor)) return mapEquals(x, y, deep);  // Map.
   if (Number.isFinite(x.length)) return arrayEquals(x, y, deep);  // Array-like.
   return objectEquals(x, y, deep);  // Other objects.
 }
