@@ -5,25 +5,22 @@ import * as set from './set.js';
 // behaviors. See the comment of `array.equals` for details.
 export function arrayEquals(xs, ys) {
   return (xs.length === ys.length &&
-          asarray(xs).every((x, i) => equals(x, ys[i], true)));
+          asarray(xs).every((x, i) => equals(x, ys[i])));
 }
 
 // See `map.equals` too.
 export function mapEquals(x, y) {
   return (x.size === y.size &&
-          x.entries().every(([k, v]) => y.has(k) && equals(v, y.get(k), true)));
+          x.entries().every(([k, v]) => y.has(k) && equals(v, y.get(k))));
 }
 
-export function objectEquals(x, y, deep=false) {
-  const xEntries = Object.entries(x)
-  if (xEntries.length !== Object.keys(y).length) return false;
-  for (const [k, v] of xEntries) {
-    if (!(deep ? equals(v, y[k], true) : v === y[k])) return false;
-  }
-  return true;
+// See `object.equals` too.
+export function objectEquals(x, y) {
+  return (Object.keys(x).length === Object.keys(y).length &&
+          Object.entries(x).every(([k, v]) => equals(v, y[k])));
 }
 
-export function equals(x, y, deep=false) {
+export function equals(x, y) {
   if (x === y) return true;
   if (typeof(x) !== 'object') return false;  // Simple types.
   if (!x || !y) return false;  // null.
@@ -31,5 +28,5 @@ export function equals(x, y, deep=false) {
   if ([Set, WeakSet].includes(x.constructor)) return set.equals(x, y);  // Set.
   if ([Map, WeakMap].includes(x.constructor)) return mapEquals(x, y);  // Map.
   if (Number.isFinite(x.length)) return arrayEquals(x, y);  // Array-like.
-  return objectEquals(x, y, deep);  // Other objects.
+  return objectEquals(x, y);  // Other objects.
 }
