@@ -1,5 +1,6 @@
 import * as array from '../utility/array.js';
 import * as dom from '../utility/dom.js';
+import * as map from '../utility/map.js';
 import * as math from '../utility/math.js';
 import * as ndarray from '../utility/ndarray.js';
 import * as random from '../utility/random.js';
@@ -107,6 +108,15 @@ function testSet() {
   console.assert(!set.equals(new Set([1, 2, 3, 4, 5]), new Set([1, 2, 3, 4, 0])));
 }
 
+function testMap() {
+  // equals
+  console.assert(map.equals(new Map([[1, 2], [3, 4]]), new Map([[1, 2], [3, 4]])));
+  console.assert(map.equals(new Map([[1, 2], [3, 4]]), new Map([[3, 4], [1, 2]])));
+  console.assert(!map.equals(new Map([[1, 2], [3, 4]]), new Map([[3, 0], [1, 2]])));
+  console.assert(!map.equals(new Map([[1, {2: 5}], [3, [4]]]),
+                             new Map([[1, {2: 5}], [3, [4]]])));
+}
+
 function testEquals() {
   // arrayEquals
   console.assert(arrayEquals([[1, 2], [3, 4, [5]]], [[1, 2], [3, 4, [5]]]));
@@ -114,9 +124,12 @@ function testEquals() {
                              [[{0: 1}, 2], [new Map([[3, 4]]), [5]]]));
 
   // mapEquals
-  console.assert(mapEquals(new Map([[1, 2], [3, 4]]), new Map([[1, 2], [3, 4]])));
   console.assert(mapEquals(new Map([[1, 2], [3, 4]]), new Map([[3, 4], [1, 2]])));
   console.assert(!mapEquals(new Map([[1, 2], [3, 4]]), new Map([[3, 0], [1, 2]])));
+  console.assert(mapEquals(new Map([[1, {2: 5}], [3, [4]]]),
+                           new Map([[1, {2: 5}], [3, [4]]])));
+  console.assert(!mapEquals(new Map([[1, {2: 5}], [3, [4]]]),
+                            new Map([[1, {2: 5}], [3, [4, 0]]])));
 
   // objectEquals
   console.assert(objectEquals({1: 2, 3: 4}, {1: 2, 3: 4}));
@@ -127,6 +140,20 @@ function testEquals() {
   console.assert(!objectEquals({1: 2, 3: 4}, {1: 2, 3: 4, 5: 6}));
 
   // equals
+  console.assert(equals(null, null));
+  console.assert(equals(undefined, undefined));
+  console.assert(equals(42, 42));
+  console.assert(equals(0, 0));
+  console.assert(equals(true, true));
+  console.assert(equals(false, false));
+  console.assert(equals('hello', 'hello'));
+  console.assert(equals('', ''));
+  console.assert(!equals(null, undefined));
+  console.assert(!equals(null, 0));
+  console.assert(!equals(null, ''));
+  console.assert(!equals(null, false));
+  console.assert(!equals(0, false));
+
   console.assert(equals([1, 2, 3, 4], [1, 2, 3, 4]));
   console.assert(equals([[1, 2], [3, 4, [5]]], [[1, 2], [3, 4, [5]]], true));
   console.assert(!equals([1, 2, 3, 4, 5], [1, 2, 3, 4]));
@@ -215,6 +242,7 @@ async function main() {
     testString,
     testArray,
     testSet,
+    testMap,
     testEquals,
     testMath,
     testNdarray,
