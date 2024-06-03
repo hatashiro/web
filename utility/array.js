@@ -6,7 +6,7 @@ export function asarray(xs) {
 // There are multiple functions for array equality.
 // - `array.equals` for shallow equality.
 // - `ndarray.equals` for deep equality only within ndarrays.
-// - `object.arrayEquals` for deep equality including other types of objects.
+// - `equals.arrayEquals` for deep equality including other types of objects.
 export function equals(xs, ys) {
   return xs.length === ys.length && asarray(xs).every((x, i) => x === ys[i]);
 }
