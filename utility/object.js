@@ -1,11 +1,11 @@
+import {asarray} from './array.js';
 import * as set from './set.js';
 
-export function arrayEquals(xs, ys, deep=false) {
-  if (xs.length !== ys.length) return false;
-  for (let i = 0; i < xs.length; i++) {
-    if (!(deep ? equals(xs[i], ys[i], true) : xs[i] === ys[i])) return false;
-  }
-  return true;
+// There are multiple functions for array equality, with slightly different
+// behaviors. See the comment of `array.equals` for details.
+export function arrayEquals(xs, ys) {
+  return (xs.length === ys.length &&
+          asarray(xs).every((x, i) => equals(x, ys[i], true)));
 }
 
 export function mapEquals(x, y, deep=false) {
@@ -33,6 +33,6 @@ export function equals(x, y, deep=false) {
   if (x.constructor !== y.constructor) return false;  // Different types.
   if ([Set, WeakSet].includes(x.constructor)) return set.equals(x, y);  // Set.
   if ([Map, WeakMap].includes(x.constructor)) return mapEquals(x, y, deep);  // Map.
-  if (Number.isFinite(x.length)) return arrayEquals(x, y, deep);  // Array-like.
+  if (Number.isFinite(x.length)) return arrayEquals(x, y);  // Array-like.
   return objectEquals(x, y, deep);  // Other objects.
 }

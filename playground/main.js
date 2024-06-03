@@ -1,3 +1,4 @@
+import * as array from '../utility/array.js';
 import * as dom from '../utility/dom.js';
 import * as math from '../utility/math.js';
 import * as ndarray from '../utility/ndarray.js';
@@ -83,6 +84,19 @@ function testString() {
   console.assert(!string.isString(null));
 }
 
+function testArray() {
+  // equals
+  console.assert(array.equals([1, 2, 3, 4], [1, 2, 3, 4]));
+  console.assert(!array.equals([1, 2, 3, 4, 5], [1, 2, 3, 4]));
+  console.assert(!array.equals([1, 2, 3, 4], [1, 2, 3, 4, 5]));
+  console.assert(!array.equals([1, 2, 3, 4, 5], [1, 2, 3, 4, 0]));
+
+  // asarray
+  const x = [1, 2, 3, 4];
+  console.assert(array.asarray(x) === x);
+  console.assert(array.equals(array.asarray(x), x));
+  console.assert(array.equals(array.asarray('hello'), ['h', 'e', 'l', 'l', 'o']));
+}
 
 function testSet() {
   // equals
@@ -95,11 +109,9 @@ function testSet() {
 
 function testObject() {
   // arrayEquals
-  console.assert(object.arrayEquals([1, 2, 3, 4], [1, 2, 3, 4]));
-  console.assert(object.arrayEquals([[1, 2], [3, 4, [5]]], [[1, 2], [3, 4, [5]]], true));
-  console.assert(!object.arrayEquals([1, 2, 3, 4, 5], [1, 2, 3, 4]));
-  console.assert(!object.arrayEquals([1, 2, 3, 4], [1, 2, 3, 4, 5]));
-  console.assert(!object.arrayEquals([1, 2, 3, 4, 5], [1, 2, 3, 4, 0]));
+  console.assert(object.arrayEquals([[1, 2], [3, 4, [5]]], [[1, 2], [3, 4, [5]]]));
+  console.assert(object.arrayEquals([[{0: 1}, 2], [new Map([[3, 4]]), [5]]],
+                                    [[{0: 1}, 2], [new Map([[3, 4]]), [5]]]));
 
   // mapEquals
   console.assert(object.mapEquals(new Map([[1, 2], [3, 4]]), new Map([[1, 2], [3, 4]])));
@@ -202,6 +214,7 @@ async function main() {
   const testFunctions = [
     testDom,
     testString,
+    testArray,
     testSet,
     testObject,
     testMath,

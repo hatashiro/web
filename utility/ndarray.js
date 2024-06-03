@@ -1,14 +1,3 @@
-// Check if two ndarrays are equal. Similar to object.arrayEquals, except that
-// this function only checks arrays.
-export function equals(X, Y) {
-  if (Array.isArray(X) && Array.isArray(Y)) {
-    if (X.length !== Y.length) return false;
-    return X.every((x, i) => equals(x, Y[i]));
-  } else {
-    return X === Y;
-  }
-}
-
 export function init(shape, valueFn) {
   if (typeof(valueFn) !== 'function') {
     const value = valueFn;
@@ -65,4 +54,15 @@ export function map(arr, mapFn) {
 
 export function copy(arr) {
   return map(arr, x => x);
+}
+
+// There are multiple functions for array equality, with slightly different
+// behaviors. See the comment of `array.equals` for details.
+export function equals(X, Y) {
+  if (Array.isArray(X) && Array.isArray(Y)) {
+    if (X.length !== Y.length) return false;
+    return X.every((x, i) => equals(x, Y[i]));
+  } else {
+    return X === Y;
+  }
 }
